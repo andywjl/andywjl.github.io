@@ -1,13 +1,15 @@
-import { prisma } from "@/lib/prisma";
+import { getAllIssues, getIssue, getCampus, getProject } from "@/lib/data";
 import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { RiskBadge, StatusBadge } from "@/components/alert-badge";
-import { AlertCircle, Building2, Target, Shield } from "lucide-react";
+import { AlertCircle, Target, Shield } from "lucide-react";
 import { format } from "date-fns";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
+export function generateStaticParams() {
+  return getAllIssues().map((i) => ({ id: i.id }));
+}
 
 export default async function IssueDetailPage({
   params,
@@ -15,13 +17,11 @@ export default async function IssueDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const issue = await prisma.issue.findUnique({
-    where: { id },
-    include: { campus: true, project: true },
-  });
-
+  const issue = getIssue(id);
   if (!issue) notFound();
 
+  const campus = getCampus(issue.campusId);
+  const project = issue.projectId ? getProject(issue.projectId) : null;
   const riskScore = issue.likelihood * issue.exposureObj * issue.exposureRange;
 
   return (
@@ -37,7 +37,7 @@ export default async function IssueDetailPage({
             <StatusBadge status={issue.status} />
           </div>
           <p className="text-sm text-gray-500 mt-1">
-            <Link href={`/campus/${issue.campus.id}`} className="text-blue-600 hover:underline">{issue.campus.name}</Link>
+            {campus && <Link href={`/campus/${campus.id}`} className="text-blue-600 hover:underline">{campus.name}</Link>}
             {" "}· {issue.category} · {issue.goal}
           </p>
         </div>
@@ -89,13 +89,11 @@ export default async function IssueDetailPage({
         </Card>
       )}
 
-      {issue.project && (
+      {project && (
         <Card>
           <CardHeader className="pb-2"><CardTitle className="text-sm">关联改造项目</CardTitle></CardHeader>
           <CardContent>
-            <Link href={`/projects/${issue.project.id}`} className="text-blue-600 hover:underline font-medium">
-              {issue.project.name}
-            </Link>
+            <Link href={`/projects/${project.id}`} className="text-blue-600 hover:underline font-medium">{project.name}</Link>
           </CardContent>
         </Card>
       )}

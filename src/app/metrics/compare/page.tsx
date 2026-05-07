@@ -1,14 +1,11 @@
-import { prisma } from "@/lib/prisma";
+import { getCampuses, getAllMetricDefinitions } from "@/lib/data";
 import { CompareClient } from "./compare-client";
 
-export const dynamic = "force-dynamic";
-
-export default async function ComparePage() {
-  const campuses = await prisma.campus.findMany({ select: { id: true, name: true }, orderBy: { name: "asc" } });
-  const definitions = await prisma.metricDefinition.findMany({
-    select: { id: true, name: true, goal: true, unit: true },
-    orderBy: { goal: "asc" },
-  });
+export default function ComparePage() {
+  const campuses = getCampuses().map(c => ({ id: c.id, name: c.name }));
+  const definitions = getAllMetricDefinitions().map(d => ({
+    id: d.id, name: d.name, goal: d.goal, unit: d.unit,
+  }));
 
   return <CompareClient campuses={campuses} definitions={definitions} />;
 }

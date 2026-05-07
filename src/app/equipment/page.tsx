@@ -1,26 +1,17 @@
-import { prisma } from "@/lib/prisma";
+import { getAllEquipment, getCampuses } from "@/lib/data";
 import { EquipmentListClient } from "./equipment-list-client";
 
-export const dynamic = "force-dynamic";
-
-export default async function EquipmentPage() {
-  const equipment = await prisma.equipment.findMany({
-    include: { campus: { select: { name: true } } },
-    orderBy: [{ status: "asc" }, { updatedAt: "desc" }],
-  });
-
-  const campuses = await prisma.campus.findMany({ select: { id: true, name: true }, orderBy: { name: "asc" } });
+export default function EquipmentPage() {
+  const equipment = getAllEquipment();
+  const campuses = getCampuses();
 
   return (
     <EquipmentListClient
       equipment={equipment.map(e => ({
         ...e,
-        campusName: e.campus.name,
-        installDate: e.installDate.toISOString(),
-        createdAt: e.createdAt.toISOString(),
-        updatedAt: e.updatedAt.toISOString(),
+        campusName: campuses.find(c => c.id === e.campusId)?.name || "",
       }))}
-      campuses={campuses}
+      campuses={campuses.map(c => ({ id: c.id, name: c.name }))}
     />
   );
 }

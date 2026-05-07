@@ -1,9 +1,11 @@
-import { prisma } from "@/lib/prisma";
+import { getCampuses, getCampus, getCampusIssues, getCampusEquipment, getCampusProjects, getCampusStats } from "@/lib/data";
 import { notFound } from "next/navigation";
 import { CampusDetailClient } from "./campus-detail-client";
 import { format } from "date-fns";
 
-export const dynamic = "force-dynamic";
+export function generateStaticParams() {
+  return getCampuses().map((c) => ({ id: c.id }));
+}
 
 export default async function CampusDetailPage({
   params,
@@ -11,34 +13,14 @@ export default async function CampusDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const campus = await prisma.campus.findUnique({
-    where: { id },
-    include: {
-      issues: { orderBy: { createdAt: "desc" }, take: 50 },
-      equipments: { orderBy: { status: "asc" }, take: 50 },
-      projects: { orderBy: { createdAt: "desc" } },
-      _count: { select: { issues: true, equipments: true, projects: true, metrics: true } },
-    },
-  });
-
+  const campus = getCampus(id);
   if (!campus) notFound();
 
+  const issues = getCampusIssues(id);
+  const equipment = getCampusEquipment(id);
+  const projects = getCampusProjects(id);
+  const stats = getCampusStats(id);
   const age = new Date().getFullYear() - new Date(campus.deliveryDate).getFullYear();
-
-  const issuesByGoal: Record<string, number> = {};
-  for (const issue of campus.issues) {
-    issuesByGoal[issue.goal] = (issuesByGoal[issue.goal] || 0) + 1;
-  }
-
-  const issuesByStatus: Record<string, number> = {};
-  for (const issue of campus.issues) {
-    issuesByStatus[issue.status] = (issuesByStatus[issue.status] || 0) + 1;
-  }
-
-  const equipByStatus: Record<string, number> = {};
-  for (const eq of campus.equipments) {
-    equipByStatus[eq.status] = (equipByStatus[eq.status] || 0) + 1;
-  }
 
   return (
     <CampusDetailClient
@@ -50,13 +32,13 @@ export default async function CampusDetailPage({
         businessLines: JSON.parse(campus.businessLines) as string[],
         topGoals: JSON.parse(campus.topGoals) as string[],
       }}
-      counts={campus._count}
-      issuesByGoal={issuesByGoal}
-      issuesByStatus={issuesByStatus}
-      equipByStatus={equipByStatus}
-      issues={campus.issues.map(i => ({ ...i, createdAt: i.createdAt.toISOString(), updatedAt: i.updatedAt.toISOString(), closedAt: i.closedAt?.toISOString() || null }))}
-      equipment={campus.equipments.map(e => ({ ...e, installDate: e.installDate.toISOString(), createdAt: e.createdAt.toISOString(), updatedAt: e.updatedAt.toISOString() }))}
-      projects={campus.projects.map(p => ({ ...p, startDate: p.startDate?.toISOString() || null, endDate: p.endDate?.toISOString() || null, createdAt: p.createdAt.toISOString(), updatedAt: p.updatedAt.toISOString() }))}
+      counts={{ issues: stats.issueCount, equipments: stats.equipmentCount, projects: stats.projectCount, metrics: 0 }}
+      issuesByGoal={{}}
+      issuesByStatus={{}}
+      equipByStatus={{}}
+      issues={issues.map(i => ({ ...i }))}
+      equipment={equipment.map(e => ({ ...e }))}
+      projects={projects.map(p => ({ ...p }))}
     />
   );
 }

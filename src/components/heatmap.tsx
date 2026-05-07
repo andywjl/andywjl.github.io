@@ -1,25 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { AlertTriangle } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-
-interface HeatmapData {
-  campuses: string[];
-  goals: string[];
-  matrix: Record<string, Record<string, { count: number; highRisk: number }>>;
-}
+import { getHeatmapData } from "@/lib/data";
 
 export function Heatmap() {
-  const [data, setData] = useState<HeatmapData | null>(null);
-
-  useEffect(() => {
-    fetch("/api/issues/heatmap")
-      .then((r) => r.json())
-      .then(setData);
-  }, []);
-
-  if (!data) return <div className="animate-pulse h-64 bg-muted rounded-lg" />;
+  const data = getHeatmapData();
 
   const maxCount = Math.max(
     1,

@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { getAllEquipment, getEquipment, getEquipmentMaintenances, getEquipmentFaults, getCampus } from "@/lib/data";
 import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,7 +7,9 @@ import { Wrench, MapPin, Calendar, Clock, Building2 } from "lucide-react";
 import { format } from "date-fns";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
+export function generateStaticParams() {
+  return getAllEquipment().map((e) => ({ id: e.id }));
+}
 
 export default async function EquipmentDetailPage({
   params,
@@ -15,16 +17,12 @@ export default async function EquipmentDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const eq = await prisma.equipment.findUnique({
-    where: { id },
-    include: {
-      campus: { select: { id: true, name: true } },
-      maintenances: { orderBy: { date: "desc" }, take: 10 },
-      faults: { orderBy: { occurredAt: "desc" }, take: 10 },
-    },
-  });
-
+  const eq = getEquipment(id);
   if (!eq) notFound();
+
+  const campus = getCampus(eq.campusId);
+  const maintenances = getEquipmentMaintenances(id);
+  const faults = getEquipmentFaults(id);
 
   const age = new Date().getFullYear() - new Date(eq.installDate).getFullYear();
   const lifePercent = Math.min(100, Math.round((age / eq.designLife) * 100));
@@ -43,7 +41,7 @@ export default async function EquipmentDetailPage({
           </div>
           <p className="text-sm text-gray-500 mt-1">
             {eq.category1} / {eq.category2} ·{" "}
-            <Link href={`/campus/${eq.campus.id}`} className="text-blue-600 hover:underline">{eq.campus.name}</Link>
+            {campus && <Link href={`/campus/${campus.id}`} className="text-blue-600 hover:underline">{campus.name}</Link>}
           </p>
         </div>
       </div>
@@ -93,16 +91,15 @@ export default async function EquipmentDetailPage({
         </Card>
       </div>
 
-      {/* Timeline */}
       <Card>
         <CardHeader className="pb-2"><CardTitle className="text-sm">维保与故障记录</CardTitle></CardHeader>
         <CardContent>
-          {eq.maintenances.length === 0 && eq.faults.length === 0 ? (
+          {maintenances.length === 0 && faults.length === 0 ? (
             <p className="text-sm text-gray-400 text-center py-8">暂无维保或故障记录</p>
           ) : (
             <div className="relative pl-6 border-l-2 border-gray-200 space-y-4">
-              {[...eq.maintenances.map(m => ({ kind: "maintenance" as const, date: m.date, id: m.id, description: m.description, mainType: m.type })),
-                ...eq.faults.map(f => ({ kind: "fault" as const, date: f.occurredAt, id: f.id, description: f.description, mainType: f.severity }))]
+              {[...maintenances.map(m => ({ kind: "maintenance" as const, date: m.date, id: m.id, description: m.description, mainType: m.type })),
+                ...faults.map(f => ({ kind: "fault" as const, date: f.occurredAt, id: f.id, description: f.description, mainType: f.severity }))]
                 .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
                 .map((item) => (
                   <div key={item.id} className="relative">

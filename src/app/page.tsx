@@ -1,61 +1,51 @@
-import { prisma } from "@/lib/prisma";
+import { getCampuses, getCampusStats, getAlertRecords, getAllIssues, getAllEquipment, getAllProjects, getAllMetricDefinitions } from "@/lib/data";
 import { DashboardClient } from "./dashboard-client";
 
-export const dynamic = "force-dynamic";
+export default function DashboardPage() {
+  const campuses = getCampuses();
 
-export default async function DashboardPage() {
-  const campuses = await prisma.campus.findMany({
-    include: { _count: { select: { issues: true, equipments: true } } },
-    orderBy: { name: "asc" },
+  const campusCards = campuses.map((c) => {
+    const stats = getCampusStats(c.id);
+    return {
+      id: c.id,
+      name: c.name,
+      city: c.city,
+      totalArea: c.totalArea,
+      workstations: c.workstations,
+      managementTier: c.managementTier,
+      ifmVendor: c.ifmVendor,
+      issueCount: stats.issueCount,
+      equipWarningCount: stats.equipWarningCount,
+      alertCount: stats.alertCount,
+    };
   });
 
-  const campusCards = await Promise.all(
-    campuses.map(async (c) => {
-      const alertCount = await prisma.metricRecord.count({
-        where: { campusId: c.id, alertLevel: { not: null } },
-      });
-      const equipWarnings = await prisma.equipment.count({
-        where: { campusId: c.id, status: { not: "正常" } },
-      });
-      return {
-        id: c.id,
-        name: c.name,
-        city: c.city,
-        totalArea: c.totalArea,
-        workstations: c.workstations,
-        managementTier: c.managementTier,
-        ifmVendor: c.ifmVendor,
-        issueCount: c._count.issues,
-        equipWarningCount: equipWarnings,
-        alertCount,
-      };
-    })
-  );
-
-  const recentAlerts = await prisma.metricRecord.findMany({
-    where: { alertLevel: { not: null } },
-    include: { metric: { select: { name: true, unit: true } }, campus: { select: { name: true } } },
-    orderBy: { recordedAt: "desc" },
-    take: 10,
+  const alertRecords = getAlertRecords().slice(0, 10);
+  const allDefs = getAllMetricDefinitions();
+  const recentAlerts = alertRecords.map((a) => {
+    const campus = campuses.find((c) => c.id === a.campusId);
+    const metric = allDefs.find((d) => d.id === a.metricId);
+    return {
+      id: a.id,
+      campusName: campus?.name || "",
+      metricName: metric?.name || "",
+      value: a.value,
+      unit: metric?.unit || "",
+      alertLevel: a.alertLevel!,
+      recordedAt: a.recordedAt,
+    };
   });
-
-  const totalIssues = await prisma.issue.count();
-  const totalEquipment = await prisma.equipment.count();
-  const totalProjects = await prisma.project.count();
 
   return (
     <DashboardClient
       campusCards={campusCards}
-      recentAlerts={recentAlerts.map((a) => ({
-        id: a.id,
-        campusName: a.campus.name,
-        metricName: a.metric.name,
-        value: a.value,
-        unit: a.metric.unit || "",
-        alertLevel: a.alertLevel!,
-        recordedAt: a.recordedAt.toISOString(),
-      }))}
-      stats={{ campuses: campuses.length, issues: totalIssues, equipment: totalEquipment, projects: totalProjects }}
+      recentAlerts={recentAlerts}
+      stats={{
+        campuses: campuses.length,
+        issues: getAllIssues().length,
+        equipment: getAllEquipment().length,
+        projects: getAllProjects().length,
+      }}
     />
   );
 }

@@ -1,20 +1,13 @@
-import { prisma } from "@/lib/prisma";
+import { getCampuses, getCampusStats } from "@/lib/data";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Building2, MapPin, Users, Calendar } from "lucide-react";
+import { Building2, MapPin, Calendar } from "lucide-react";
 import { TIER_COLORS } from "@/lib/constants";
 import { format } from "date-fns";
 
-export const dynamic = "force-dynamic";
-
-export default async function CampusListPage() {
-  const campuses = await prisma.campus.findMany({
-    include: {
-      _count: { select: { issues: true, equipments: true, projects: true } },
-    },
-    orderBy: { name: "asc" },
-  });
+export default function CampusListPage() {
+  const campuses = getCampuses();
 
   return (
     <div>
@@ -27,6 +20,7 @@ export default async function CampusListPage() {
         {campuses.map((c) => {
           const tierClass = TIER_COLORS[c.managementTier] || "bg-gray-100 text-gray-700";
           const age = new Date().getFullYear() - new Date(c.deliveryDate).getFullYear();
+          const stats = getCampusStats(c.id);
           return (
             <Link key={c.id} href={`/campus/${c.id}`}>
               <Card className="hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer">
@@ -46,7 +40,6 @@ export default async function CampusListPage() {
                     </div>
                     <Badge variant="outline" className={tierClass}>{c.managementTier}</Badge>
                   </div>
-
                   <div className="grid grid-cols-4 gap-3 mb-4">
                     <div className="text-center p-2.5 bg-gray-50 rounded-lg">
                       <p className="text-lg font-bold text-gray-900">{c.totalArea}</p>
@@ -61,15 +54,14 @@ export default async function CampusListPage() {
                       <p className="text-[10px] text-gray-500">楼龄(年)</p>
                     </div>
                     <div className="text-center p-2.5 bg-gray-50 rounded-lg">
-                      <p className="text-lg font-bold text-gray-900">{c._count.equipments}</p>
+                      <p className="text-lg font-bold text-gray-900">{stats.equipmentCount}</p>
                       <p className="text-[10px] text-gray-500">设备数</p>
                     </div>
                   </div>
-
                   <div className="flex items-center justify-between text-xs text-gray-500">
                     <div className="flex items-center gap-3">
-                      <span>{c._count.issues} 个问题</span>
-                      <span>{c._count.projects} 个项目</span>
+                      <span>{stats.issueCount} 个问题</span>
+                      <span>{stats.projectCount} 个项目</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Calendar className="w-3 h-3" />

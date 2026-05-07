@@ -1,32 +1,30 @@
-import { prisma } from "@/lib/prisma";
+import { getAllMetricDefinitions, getAlertRecords, getCampuses } from "@/lib/data";
 import { MetricsClient } from "./metrics-client";
 
-export const dynamic = "force-dynamic";
+export default function MetricsPage() {
+  const definitions = getAllMetricDefinitions();
+  const campuses = getCampuses();
+  const alertRecords = getAlertRecords().slice(0, 20);
 
-export default async function MetricsPage() {
-  const definitions = await prisma.metricDefinition.findMany({ orderBy: { goal: "asc" } });
-  const campuses = await prisma.campus.findMany({ select: { id: true, name: true }, orderBy: { name: "asc" } });
-
-  const recentAlerts = await prisma.metricRecord.findMany({
-    where: { alertLevel: { not: null } },
-    include: { metric: { select: { name: true, unit: true } }, campus: { select: { name: true } } },
-    orderBy: { recordedAt: "desc" },
-    take: 20,
+  const recentAlerts = alertRecords.map(a => {
+    const campus = campuses.find(c => c.id === a.campusId);
+    const metric = definitions.find(d => d.id === a.metricId);
+    return {
+      id: a.id,
+      campusName: campus?.name || "",
+      metricName: metric?.name || "",
+      value: a.value,
+      unit: metric?.unit || "",
+      alertLevel: a.alertLevel!,
+      recordedAt: a.recordedAt,
+    };
   });
 
   return (
     <MetricsClient
-      definitions={definitions.map(d => ({ ...d, createdAt: d.createdAt.toISOString() }))}
-      campuses={campuses}
-      recentAlerts={recentAlerts.map(a => ({
-        id: a.id,
-        campusName: a.campus.name,
-        metricName: a.metric.name,
-        value: a.value,
-        unit: a.metric.unit || "",
-        alertLevel: a.alertLevel!,
-        recordedAt: a.recordedAt.toISOString(),
-      }))}
+      definitions={definitions}
+      campuses={campuses.map(c => ({ id: c.id, name: c.name }))}
+      recentAlerts={recentAlerts}
     />
   );
 }

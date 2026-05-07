@@ -1,26 +1,17 @@
-import { prisma } from "@/lib/prisma";
+import { getAllIssues, getCampuses } from "@/lib/data";
 import { IssuesKanbanClient } from "./issues-kanban-client";
 
-export const dynamic = "force-dynamic";
-
-export default async function IssuesPage() {
-  const issues = await prisma.issue.findMany({
-    include: { campus: { select: { name: true } } },
-    orderBy: { createdAt: "desc" },
-  });
-
-  const campuses = await prisma.campus.findMany({ select: { id: true, name: true }, orderBy: { name: "asc" } });
+export default function IssuesPage() {
+  const issues = getAllIssues();
+  const campuses = getCampuses();
 
   return (
     <IssuesKanbanClient
       issues={issues.map(i => ({
         ...i,
-        campusName: i.campus.name,
-        createdAt: i.createdAt.toISOString(),
-        updatedAt: i.updatedAt.toISOString(),
-        closedAt: i.closedAt?.toISOString() || null,
+        campusName: campuses.find(c => c.id === i.campusId)?.name || "",
       }))}
-      campuses={campuses}
+      campuses={campuses.map(c => ({ id: c.id, name: c.name }))}
     />
   );
 }
