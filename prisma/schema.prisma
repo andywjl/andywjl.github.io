@@ -1,0 +1,178 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ==================== 园区档案 ====================
+model Campus {
+  id            String   @id @default(cuid())
+  name          String   @unique
+  city          String
+  deliveryDate  DateTime
+  propertyType  String
+  totalArea     Float
+  workstations  Int
+  ifmVendor     String
+  ifmSwitchDate DateTime?
+  managementTier String
+  businessLines String   @default("[]")
+  topGoals      String   @default("[]")
+
+  equipments    Equipment[]
+  issues        Issue[]
+  metrics       MetricRecord[]
+  projects      Project[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ==================== 设备档案 ====================
+model Equipment {
+  id            String   @id @default(cuid())
+  campusId      String
+  campus        Campus   @relation(fields: [campusId], references: [id])
+
+  name          String
+  category1     String
+  category2     String
+  location      String
+  brand         String?
+  model         String?
+  installDate   DateTime
+  designLife    Int
+  status        String   @default("正常")
+
+  params        String?
+
+  maintenances  Maintenance[]
+  faults        Fault[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Maintenance {
+  id            String   @id @default(cuid())
+  equipmentId   String
+  equipment     Equipment @relation(fields: [equipmentId], references: [id])
+
+  type          String
+  date          DateTime
+  description   String
+  cost          Float?
+  vendor        String?
+  nextDate      DateTime?
+
+  createdAt     DateTime @default(now())
+}
+
+model Fault {
+  id            String   @id @default(cuid())
+  equipmentId   String
+  equipment     Equipment @relation(fields: [equipmentId], references: [id])
+
+  occurredAt    DateTime
+  description   String
+  severity      String
+  resolvedAt    DateTime?
+  resolution    String?
+  downtime      Int?
+
+  createdAt     DateTime @default(now())
+}
+
+// ==================== 问题档案 ====================
+model Issue {
+  id            String   @id @default(cuid())
+  campusId      String
+  campus        Campus   @relation(fields: [campusId], references: [id])
+
+  title         String
+  description   String
+  category      String
+  goal          String
+  nature        String
+
+  likelihood    Int
+  exposureObj   Int
+  exposureRange Int
+  hasBottomLine Boolean
+  riskLevel     String
+
+  status        String   @default("待确认")
+  solution      String?
+  verifyResult  String?
+  closedAt      DateTime?
+
+  projectId     String?
+  project       Project? @relation(fields: [projectId], references: [id])
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ==================== 指标档案 ====================
+model MetricDefinition {
+  id            String   @id @default(cuid())
+  name          String   @unique
+  goal          String
+  formula       String?
+  unit          String?
+  industryStd   String?
+  companyTarget String?
+  source        String
+  frequency     String
+
+  yellowThreshold Float?
+  orangeThreshold Float?
+  redThreshold    Float?
+  thresholdDir    String @default("above")
+
+  records       MetricRecord[]
+
+  createdAt     DateTime @default(now())
+}
+
+model MetricRecord {
+  id            String   @id @default(cuid())
+  metricId      String
+  metric        MetricDefinition @relation(fields: [metricId], references: [id])
+  campusId      String
+  campus        Campus   @relation(fields: [campusId], references: [id])
+
+  value         Float
+  recordedAt    DateTime
+  alertLevel    String?
+
+  createdAt     DateTime @default(now())
+
+  @@index([metricId, campusId, recordedAt])
+}
+
+// ==================== 改造项目 ====================
+model Project {
+  id            String   @id @default(cuid())
+  campusId      String
+  campus        Campus   @relation(fields: [campusId], references: [id])
+
+  name          String
+  goal          String
+  budget        Float
+  duration      String
+  status        String   @default("立项")
+  expectedEffect String
+  actualEffect  String?
+  replicable    Boolean  @default(false)
+  startDate     DateTime?
+  endDate       DateTime?
+
+  issues        Issue[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
