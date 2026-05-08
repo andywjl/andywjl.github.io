@@ -1,0 +1,73 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis, vector]
+}
+
+model Region {
+  id        String    @id
+  nameZh    String
+  nameEn    String
+  countries Country[]
+}
+
+model Country {
+  id         String      @id
+  nameZh     String
+  nameEn     String
+  regionId   String
+  region     Region      @relation(fields: [regionId], references: [id])
+  centerLng  Float
+  centerLat  Float
+  workspaces Workspace[]
+}
+
+model Workspace {
+  id               String          @id @default(cuid())
+  code             String?         @unique
+  name             String
+  countryId        String
+  country          Country         @relation(fields: [countryId], references: [id])
+  province         String?
+  city             String
+  district         String?
+  address          String
+  buildingName     String?
+  floor            String?
+  lng              Float
+  lat              Float
+  leaseStartDate   DateTime?
+  deliveryDate     DateTime?
+  moveInDate       DateTime?
+  leaseEndDate     DateTime?
+  actualEndDate    DateTime?
+  floorStatus      String?
+  status           WorkspaceStatus @default(ACTIVE)
+  seatCount        Int             @default(0)
+  allocatedSeats   Int?
+  leasedAreaSqm    Float?
+  decoratedAreaSqm Float?
+  usableAreaSqm    Float?
+  ownerName        String?
+  ownerEmail       String?
+  description      String?
+  tags             String[]        @default([])
+  embedding        Unsupported("vector(1536)")?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@index([countryId])
+  @@index([status])
+  @@index([city])
+}
+
+enum WorkspaceStatus {
+  ACTIVE
+  PLANNING
+  CLOSED
+}

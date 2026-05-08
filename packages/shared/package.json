@@ -1,0 +1,17 @@
+{
+  "name": "shared",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "prisma": "prisma",
+    "seed": "tsx scripts/seed.ts",
+    "import:raw": "tsx scripts/import-from-raw.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.2"
+  },
+  "devDependencies": {
+    "prisma": "^6.19.2",
+    "tsx": "^4.20.6"
+  }
+}
