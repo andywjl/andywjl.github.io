@@ -44,5 +44,13 @@
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "^5"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/engines",
+      "prisma",
+      "better-sqlite3",
+      "esbuild"
+    ]
   }
 }
