@@ -18,14 +18,34 @@ type CountrySeed = {
   centerLat: number;
 };
 
-type WorkspacePlan = {
-  prefix: string;
-  namePrefix: string;
+type WorkspaceSeed = {
+  code: string;
+  name: string;
   countryId: string;
+  province: string | null;
   city: string;
-  baseLat: number;
-  baseLng: number;
-  count: number;
+  district: string | null;
+  address: string;
+  buildingName: string | null;
+  floor: string | null;
+  lng: number;
+  lat: number;
+  leaseStartDate: string | null;
+  deliveryDate: string | null;
+  moveInDate: string | null;
+  leaseEndDate: string | null;
+  actualEndDate: string | null;
+  floorStatus: string | null;
+  status: WorkspaceStatus;
+  seatCount: number;
+  allocatedSeats: number | null;
+  leasedAreaSqm: number | null;
+  decoratedAreaSqm: number | null;
+  usableAreaSqm: number | null;
+  ownerName: string | null;
+  ownerEmail: string | null;
+  description: string | null;
+  tags: string[];
 };
 
 const __filename = fileURLToPath(import.meta.url);
@@ -38,64 +58,10 @@ async function readJson<T>(name: string): Promise<T> {
   return JSON.parse(content) as T;
 }
 
-function round(value: number): number {
-  return Number(value.toFixed(6));
-}
-
-function generateWorkspaces(plans: WorkspacePlan[]) {
-  const items: Array<{
-    id: string;
-    code: string;
-    name: string;
-    countryId: string;
-    city: string;
-    address: string;
-    lng: number;
-    lat: number;
-    status: WorkspaceStatus;
-    seatCount: number;
-    floor: string;
-    tags: string[];
-  }> = [];
-
-  let sequence = 1;
-  for (const plan of plans) {
-    for (let i = 0; i < plan.count; i += 1) {
-      const offsetIndex = i - Math.floor(plan.count / 2);
-      const latOffset = ((offsetIndex % 11) - 5) * 0.025;
-      const lngOffset = ((offsetIndex % 13) - 6) * 0.03;
-      const status: WorkspaceStatus =
-        sequence % 29 === 0
-          ? WorkspaceStatus.CLOSED
-          : sequence % 17 === 0
-            ? WorkspaceStatus.PLANNING
-            : WorkspaceStatus.ACTIVE;
-
-      items.push({
-        id: `ws-${String(sequence).padStart(4, "0")}`,
-        code: `W${String(sequence).padStart(3, "0")}`,
-        name: `${plan.namePrefix} ${i + 1}`,
-        countryId: plan.countryId,
-        city: plan.city,
-        address: `${plan.city} ${plan.prefix} Road ${i + 1}`,
-        lng: round(plan.baseLng + lngOffset),
-        lat: round(plan.baseLat + latOffset),
-        status,
-        seatCount: 80 + (sequence % 160),
-        floor: `${(sequence % 25) + 1}F`,
-        tags: [plan.prefix.split("-")[0], plan.city],
-      });
-      sequence += 1;
-    }
-  }
-
-  return items;
-}
-
 function assertExpectedCounts(
   regions: RegionSeed[],
   countries: CountrySeed[],
-  workspaces: Array<{ countryId: string; city: string }>,
+  workspaces: WorkspaceSeed[],
 ) {
   if (regions.length !== 4) {
     throw new Error(`Expected 4 regions, got ${regions.length}`);
@@ -107,8 +73,10 @@ function assertExpectedCounts(
     throw new Error(`Expected 215 workspaces, got ${workspaces.length}`);
   }
 
-  const singaporeCount = workspaces.filter((item) =>
-    item.city.toLowerCase().includes("singapore"),
+  const singaporeCount = workspaces.filter(
+    (item) =>
+      item.city.toLowerCase().includes("singapore") ||
+      item.city.includes("新加坡"),
   ).length;
   if (singaporeCount !== 5) {
     throw new Error(`Expected 5 Singapore workspaces, got ${singaporeCount}`);
@@ -118,8 +86,7 @@ function assertExpectedCounts(
 async function main() {
   const regions = await readJson<RegionSeed[]>("regions.json");
   const countries = await readJson<CountrySeed[]>("countries.json");
-  const plans = await readJson<WorkspacePlan[]>("workspaces.json");
-  const workspaces = generateWorkspaces(plans);
+  const workspaces = await readJson<WorkspaceSeed[]>("workspaces.json");
 
   assertExpectedCounts(regions, countries, workspaces);
 
@@ -127,6 +94,9 @@ async function main() {
   for (const workspace of workspaces) {
     if (!validCountryIds.has(workspace.countryId)) {
       throw new Error(`Workspace countryId not found: ${workspace.countryId}`);
+    }
+    if (!workspace.code) {
+      throw new Error(`Workspace code is required: ${workspace.name}`);
     }
   }
 
@@ -138,7 +108,24 @@ async function main() {
 
   await prisma.region.createMany({ data: regions });
   await prisma.country.createMany({ data: countries });
-  await prisma.workspace.createMany({ data: workspaces });
+  await prisma.workspace.createMany({
+    data: workspaces.map((workspace) => ({
+      ...workspace,
+      leaseStartDate: workspace.leaseStartDate
+        ? new Date(workspace.leaseStartDate)
+        : null,
+      deliveryDate: workspace.deliveryDate
+        ? new Date(workspace.deliveryDate)
+        : null,
+      moveInDate: workspace.moveInDate ? new Date(workspace.moveInDate) : null,
+      leaseEndDate: workspace.leaseEndDate
+        ? new Date(workspace.leaseEndDate)
+        : null,
+      actualEndDate: workspace.actualEndDate
+        ? new Date(workspace.actualEndDate)
+        : null,
+    })),
+  });
 
   console.log(`Seeded regions: ${regions.length}`);
   console.log(`Seeded countries: ${countries.length}`);

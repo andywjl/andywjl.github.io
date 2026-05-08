@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "prisma": "prisma",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts",
+    "import:raw": "tsx scripts/import-from-raw.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.2"

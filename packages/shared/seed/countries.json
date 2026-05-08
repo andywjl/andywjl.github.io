@@ -1,49 +1,354 @@
 [
-  { "id": "CHN", "nameZh": "中国", "nameEn": "China", "regionId": "CN", "centerLng": 104.1954, "centerLat": 35.8617 },
-
-  { "id": "SGP", "nameZh": "新加坡", "nameEn": "Singapore", "regionId": "APAC", "centerLng": 103.8198, "centerLat": 1.3521 },
-  { "id": "JPN", "nameZh": "日本", "nameEn": "Japan", "regionId": "APAC", "centerLng": 138.2529, "centerLat": 36.2048 },
-  { "id": "IND", "nameZh": "印度", "nameEn": "India", "regionId": "APAC", "centerLng": 78.9629, "centerLat": 20.5937 },
-  { "id": "AUS", "nameZh": "澳大利亚", "nameEn": "Australia", "regionId": "APAC", "centerLng": 133.7751, "centerLat": -25.2744 },
-  { "id": "KOR", "nameZh": "韩国", "nameEn": "South Korea", "regionId": "APAC", "centerLng": 127.7669, "centerLat": 35.9078 },
-  { "id": "THA", "nameZh": "泰国", "nameEn": "Thailand", "regionId": "APAC", "centerLng": 100.9925, "centerLat": 15.87 },
-  { "id": "MYS", "nameZh": "马来西亚", "nameEn": "Malaysia", "regionId": "APAC", "centerLng": 101.9758, "centerLat": 4.2105 },
-  { "id": "IDN", "nameZh": "印度尼西亚", "nameEn": "Indonesia", "regionId": "APAC", "centerLng": 113.9213, "centerLat": -0.7893 },
-  { "id": "VNM", "nameZh": "越南", "nameEn": "Vietnam", "regionId": "APAC", "centerLng": 108.2772, "centerLat": 14.0583 },
-  { "id": "PHL", "nameZh": "菲律宾", "nameEn": "Philippines", "regionId": "APAC", "centerLng": 121.774, "centerLat": 12.8797 },
-  { "id": "NZL", "nameZh": "新西兰", "nameEn": "New Zealand", "regionId": "APAC", "centerLng": 174.886, "centerLat": -40.9006 },
-  { "id": "PAK", "nameZh": "巴基斯坦", "nameEn": "Pakistan", "regionId": "APAC", "centerLng": 69.3451, "centerLat": 30.3753 },
-
-  { "id": "GBR", "nameZh": "英国", "nameEn": "United Kingdom", "regionId": "EMEA", "centerLng": -3.436, "centerLat": 55.3781 },
-  { "id": "DEU", "nameZh": "德国", "nameEn": "Germany", "regionId": "EMEA", "centerLng": 10.4515, "centerLat": 51.1657 },
-  { "id": "FRA", "nameZh": "法国", "nameEn": "France", "regionId": "EMEA", "centerLng": 2.2137, "centerLat": 46.2276 },
-  { "id": "ARE", "nameZh": "阿联酋", "nameEn": "United Arab Emirates", "regionId": "EMEA", "centerLng": 53.8478, "centerLat": 23.4241 },
-  { "id": "NLD", "nameZh": "荷兰", "nameEn": "Netherlands", "regionId": "EMEA", "centerLng": 5.2913, "centerLat": 52.1326 },
-  { "id": "ESP", "nameZh": "西班牙", "nameEn": "Spain", "regionId": "EMEA", "centerLng": -3.7492, "centerLat": 40.4637 },
-  { "id": "ITA", "nameZh": "意大利", "nameEn": "Italy", "regionId": "EMEA", "centerLng": 12.5674, "centerLat": 41.8719 },
-  { "id": "CHE", "nameZh": "瑞士", "nameEn": "Switzerland", "regionId": "EMEA", "centerLng": 8.2275, "centerLat": 46.8182 },
-  { "id": "SWE", "nameZh": "瑞典", "nameEn": "Sweden", "regionId": "EMEA", "centerLng": 18.6435, "centerLat": 60.1282 },
-  { "id": "NOR", "nameZh": "挪威", "nameEn": "Norway", "regionId": "EMEA", "centerLng": 8.4689, "centerLat": 60.472 },
-  { "id": "DNK", "nameZh": "丹麦", "nameEn": "Denmark", "regionId": "EMEA", "centerLng": 9.5018, "centerLat": 56.2639 },
-  { "id": "POL", "nameZh": "波兰", "nameEn": "Poland", "regionId": "EMEA", "centerLng": 19.1451, "centerLat": 51.9194 },
-  { "id": "TUR", "nameZh": "土耳其", "nameEn": "Turkey", "regionId": "EMEA", "centerLng": 35.2433, "centerLat": 38.9637 },
-  { "id": "SAU", "nameZh": "沙特阿拉伯", "nameEn": "Saudi Arabia", "regionId": "EMEA", "centerLng": 45.0792, "centerLat": 23.8859 },
-  { "id": "QAT", "nameZh": "卡塔尔", "nameEn": "Qatar", "regionId": "EMEA", "centerLng": 51.1839, "centerLat": 25.3548 },
-  { "id": "EGY", "nameZh": "埃及", "nameEn": "Egypt", "regionId": "EMEA", "centerLng": 30.8025, "centerLat": 26.8206 },
-  { "id": "ZAF", "nameZh": "南非", "nameEn": "South Africa", "regionId": "EMEA", "centerLng": 22.9375, "centerLat": -30.5595 },
-  { "id": "NGA", "nameZh": "尼日利亚", "nameEn": "Nigeria", "regionId": "EMEA", "centerLng": 8.6753, "centerLat": 9.082 },
-  { "id": "KEN", "nameZh": "肯尼亚", "nameEn": "Kenya", "regionId": "EMEA", "centerLng": 37.9062, "centerLat": -0.0236 },
-
-  { "id": "USA", "nameZh": "美国", "nameEn": "United States", "regionId": "AMS", "centerLng": -95.7129, "centerLat": 37.0902 },
-  { "id": "CAN", "nameZh": "加拿大", "nameEn": "Canada", "regionId": "AMS", "centerLng": -106.3468, "centerLat": 56.1304 },
-  { "id": "BRA", "nameZh": "巴西", "nameEn": "Brazil", "regionId": "AMS", "centerLng": -51.9253, "centerLat": -14.235 },
-  { "id": "MEX", "nameZh": "墨西哥", "nameEn": "Mexico", "regionId": "AMS", "centerLng": -102.5528, "centerLat": 23.6345 },
-  { "id": "ARG", "nameZh": "阿根廷", "nameEn": "Argentina", "regionId": "AMS", "centerLng": -63.6167, "centerLat": -38.4161 },
-  { "id": "CHL", "nameZh": "智利", "nameEn": "Chile", "regionId": "AMS", "centerLng": -71.543, "centerLat": -35.6751 },
-  { "id": "COL", "nameZh": "哥伦比亚", "nameEn": "Colombia", "regionId": "AMS", "centerLng": -74.2973, "centerLat": 4.5709 },
-  { "id": "PER", "nameZh": "秘鲁", "nameEn": "Peru", "regionId": "AMS", "centerLng": -75.0152, "centerLat": -9.19 },
-  { "id": "URY", "nameZh": "乌拉圭", "nameEn": "Uruguay", "regionId": "AMS", "centerLng": -55.7658, "centerLat": -32.5228 },
-  { "id": "PAN", "nameZh": "巴拿马", "nameEn": "Panama", "regionId": "AMS", "centerLng": -80.7821, "centerLat": 8.538 },
-  { "id": "CRI", "nameZh": "哥斯达黎加", "nameEn": "Costa Rica", "regionId": "AMS", "centerLng": -83.7534, "centerLat": 9.7489 },
-  { "id": "DOM", "nameZh": "多米尼加", "nameEn": "Dominican Republic", "regionId": "AMS", "centerLng": -70.1627, "centerLat": 18.7357 }
+  {
+    "id": "ARE",
+    "nameZh": "阿联酋",
+    "nameEn": "United Arab Emirates",
+    "regionId": "EMEA",
+    "centerLng": 55.168509,
+    "centerLat": 25.102416
+  },
+  {
+    "id": "ARG",
+    "nameZh": "阿根廷",
+    "nameEn": "Argentina",
+    "regionId": "AMS",
+    "centerLng": -58.47247,
+    "centerLat": -34.524794
+  },
+  {
+    "id": "AUS",
+    "nameZh": "澳大利亚",
+    "nameEn": "Australia",
+    "regionId": "APAC",
+    "centerLng": 148.086084,
+    "centerLat": -35.837016
+  },
+  {
+    "id": "BEL",
+    "nameZh": "比利时",
+    "nameEn": "Belgium",
+    "regionId": "EMEA",
+    "centerLng": 4.367681,
+    "centerLat": 50.842927
+  },
+  {
+    "id": "BRA",
+    "nameZh": "巴西",
+    "nameEn": "Brazil",
+    "regionId": "AMS",
+    "centerLng": -46.683695,
+    "centerLat": -23.589436
+  },
+  {
+    "id": "CAN",
+    "nameZh": "加拿大",
+    "nameEn": "Canada",
+    "regionId": "AMS",
+    "centerLng": -79.42598,
+    "centerLat": 43.638778
+  },
+  {
+    "id": "CHE",
+    "nameZh": "瑞士",
+    "nameEn": "Switzerland",
+    "regionId": "EMEA",
+    "centerLng": 8.534785,
+    "centerLat": 47.371893
+  },
+  {
+    "id": "CHN",
+    "nameZh": "中国",
+    "nameEn": "China",
+    "regionId": "CN",
+    "centerLng": 115.259104,
+    "centerLat": 32.26526
+  },
+  {
+    "id": "COL",
+    "nameZh": "哥伦比亚",
+    "nameEn": "Colombia",
+    "regionId": "AMS",
+    "centerLng": -74.053523,
+    "centerLat": 4.665301
+  },
+  {
+    "id": "DEU",
+    "nameZh": "德国",
+    "nameEn": "Germany",
+    "regionId": "EMEA",
+    "centerLng": 10.820354,
+    "centerLat": 50.282473
+  },
+  {
+    "id": "DNK",
+    "nameZh": "丹麦",
+    "nameEn": "Denmark",
+    "regionId": "EMEA",
+    "centerLng": 12.562088,
+    "centerLat": 55.677762
+  },
+  {
+    "id": "EGY",
+    "nameZh": "埃及",
+    "nameEn": "Egypt",
+    "regionId": "EMEA",
+    "centerLng": 31.458852,
+    "centerLat": 30.028406
+  },
+  {
+    "id": "ESP",
+    "nameZh": "西班牙",
+    "nameEn": "Spain",
+    "regionId": "EMEA",
+    "centerLng": -0.758195,
+    "centerLat": 40.903357
+  },
+  {
+    "id": "FRA",
+    "nameZh": "法国",
+    "nameEn": "France",
+    "regionId": "EMEA",
+    "centerLng": 2.348417,
+    "centerLat": 48.871971
+  },
+  {
+    "id": "GBR",
+    "nameZh": "英国",
+    "nameEn": "United Kingdom",
+    "regionId": "EMEA",
+    "centerLng": -0.075498,
+    "centerLat": 51.516424
+  },
+  {
+    "id": "HKG",
+    "nameZh": "中国香港",
+    "nameEn": "Hong Kong",
+    "regionId": "APAC",
+    "centerLng": 114.156908,
+    "centerLat": 22.284904
+  },
+  {
+    "id": "IDN",
+    "nameZh": "印度尼西亚",
+    "nameEn": "Indonesia",
+    "regionId": "APAC",
+    "centerLng": 107.691735,
+    "centerLat": -6.594722
+  },
+  {
+    "id": "IND",
+    "nameZh": "印度",
+    "nameEn": "India",
+    "regionId": "APAC",
+    "centerLng": 74.973352,
+    "centerLat": 23.824779
+  },
+  {
+    "id": "IRL",
+    "nameZh": "爱尔兰",
+    "nameEn": "Ireland",
+    "regionId": "EMEA",
+    "centerLng": -6.241034,
+    "centerLat": 53.344722
+  },
+  {
+    "id": "ISR",
+    "nameZh": "以色列",
+    "nameEn": "Israel",
+    "regionId": "EMEA",
+    "centerLng": 34.794928,
+    "centerLat": 32.073047
+  },
+  {
+    "id": "ITA",
+    "nameZh": "意大利",
+    "nameEn": "Italy",
+    "regionId": "EMEA",
+    "centerLng": 9.188599,
+    "centerLat": 45.46205
+  },
+  {
+    "id": "JPN",
+    "nameZh": "日本",
+    "nameEn": "Japan",
+    "regionId": "APAC",
+    "centerLng": 139.703759,
+    "centerLat": 35.659279
+  },
+  {
+    "id": "KAZ",
+    "nameZh": "哈萨克斯坦",
+    "nameEn": "Kazakhstan",
+    "regionId": "APAC",
+    "centerLng": 74.167994,
+    "centerLat": 47.17331
+  },
+  {
+    "id": "KOR",
+    "nameZh": "韩国",
+    "nameEn": "South Korea",
+    "regionId": "APAC",
+    "centerLng": 127.04064,
+    "centerLat": 37.517363
+  },
+  {
+    "id": "LUX",
+    "nameZh": "卢森堡",
+    "nameEn": "Luxembourg",
+    "regionId": "EMEA",
+    "centerLng": 6.124452,
+    "centerLat": 49.610933
+  },
+  {
+    "id": "MAR",
+    "nameZh": "摩洛哥",
+    "nameEn": "Morocco",
+    "regionId": "EMEA",
+    "centerLng": -7.663828,
+    "centerLat": 33.563038
+  },
+  {
+    "id": "MEX",
+    "nameZh": "墨西哥",
+    "nameEn": "Mexico",
+    "regionId": "AMS",
+    "centerLng": -99.201226,
+    "centerLat": 19.444975
+  },
+  {
+    "id": "MYS",
+    "nameZh": "马来西亚",
+    "nameEn": "Malaysia",
+    "regionId": "APAC",
+    "centerLng": 101.70655,
+    "centerLat": 3.132024
+  },
+  {
+    "id": "NLD",
+    "nameZh": "荷兰",
+    "nameEn": "Netherlands",
+    "regionId": "EMEA",
+    "centerLng": 4.85869,
+    "centerLat": 52.341588
+  },
+  {
+    "id": "NOR",
+    "nameZh": "挪威",
+    "nameEn": "Norway",
+    "regionId": "EMEA",
+    "centerLng": 10.744355,
+    "centerLat": 59.912905
+  },
+  {
+    "id": "NZL",
+    "nameZh": "新西兰",
+    "nameEn": "New Zealand",
+    "regionId": "APAC",
+    "centerLng": 174.766032,
+    "centerLat": -36.844254
+  },
+  {
+    "id": "PHL",
+    "nameZh": "菲律宾",
+    "nameEn": "Philippines",
+    "regionId": "APAC",
+    "centerLng": 121.053275,
+    "centerLat": 14.565123
+  },
+  {
+    "id": "POL",
+    "nameZh": "波兰",
+    "nameEn": "Poland",
+    "regionId": "EMEA",
+    "centerLng": 20.987682,
+    "centerLat": 52.234479
+  },
+  {
+    "id": "PRT",
+    "nameZh": "葡萄牙",
+    "nameEn": "Portugal",
+    "regionId": "EMEA",
+    "centerLng": -9.152689,
+    "centerLat": 38.733277
+  },
+  {
+    "id": "ROU",
+    "nameZh": "罗马尼亚",
+    "nameEn": "Romania",
+    "regionId": "EMEA",
+    "centerLng": 26.053716,
+    "centerLat": 44.435031
+  },
+  {
+    "id": "RUS",
+    "nameZh": "俄罗斯",
+    "nameEn": "Russia",
+    "regionId": "APAC",
+    "centerLng": 37.628326,
+    "centerLat": 55.747679
+  },
+  {
+    "id": "SAU",
+    "nameZh": "沙特阿拉伯",
+    "nameEn": "Saudi Arabia",
+    "regionId": "EMEA",
+    "centerLng": 46.684969,
+    "centerLat": 24.690316
+  },
+  {
+    "id": "SGP",
+    "nameZh": "新加坡",
+    "nameEn": "Singapore",
+    "regionId": "APAC",
+    "centerLng": 103.85001,
+    "centerLat": 1.281043
+  },
+  {
+    "id": "SWE",
+    "nameZh": "瑞典",
+    "nameEn": "Sweden",
+    "regionId": "EMEA",
+    "centerLng": 18.06394,
+    "centerLat": 59.331187
+  },
+  {
+    "id": "THA",
+    "nameZh": "泰国",
+    "nameEn": "Thailand",
+    "regionId": "APAC",
+    "centerLng": 100.533468,
+    "centerLat": 13.727991
+  },
+  {
+    "id": "TUR",
+    "nameZh": "土耳其",
+    "nameEn": "Turkey",
+    "regionId": "EMEA",
+    "centerLng": 29.008583,
+    "centerLat": 41.079617
+  },
+  {
+    "id": "USA",
+    "nameZh": "美国",
+    "nameEn": "United States",
+    "regionId": "AMS",
+    "centerLng": -105.059975,
+    "centerLat": 37.207009
+  },
+  {
+    "id": "VNM",
+    "nameZh": "越南",
+    "nameEn": "Vietnam",
+    "regionId": "APAC",
+    "centerLng": 106.243865,
+    "centerLat": 15.904892
+  },
+  {
+    "id": "ZAF",
+    "nameZh": "南非",
+    "nameEn": "South Africa",
+    "regionId": "EMEA",
+    "centerLng": 28.043739,
+    "centerLat": -26.145503
+  }
 ]

@@ -1,6 +1,22 @@
 [
-  { "id": "CN", "nameZh": "中国", "nameEn": "China" },
-  { "id": "APAC", "nameZh": "亚太", "nameEn": "APAC" },
-  { "id": "EMEA", "nameZh": "欧洲中东非洲", "nameEn": "EMEA" },
-  { "id": "AMS", "nameZh": "美洲", "nameEn": "AMS" }
+  {
+    "id": "CN",
+    "nameZh": "中国",
+    "nameEn": "China"
+  },
+  {
+    "id": "APAC",
+    "nameZh": "亚太",
+    "nameEn": "APAC"
+  },
+  {
+    "id": "EMEA",
+    "nameZh": "欧洲中东非洲",
+    "nameEn": "EMEA"
+  },
+  {
+    "id": "AMS",
+    "nameZh": "美洲",
+    "nameEn": "AMS"
+  }
 ]
