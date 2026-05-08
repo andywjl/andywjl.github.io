@@ -1,0 +1,173 @@
+[
+  {
+    "prefix": "CN-BJ",
+    "namePrefix": "Beijing Workspace",
+    "countryId": "CHN",
+    "city": "Beijing",
+    "baseLat": 39.9042,
+    "baseLng": 116.4074,
+    "count": 50
+  },
+  {
+    "prefix": "CN-SH",
+    "namePrefix": "Shanghai Workspace",
+    "countryId": "CHN",
+    "city": "Shanghai",
+    "baseLat": 31.2304,
+    "baseLng": 121.4737,
+    "count": 40
+  },
+  {
+    "prefix": "CN-SZ",
+    "namePrefix": "Shenzhen Workspace",
+    "countryId": "CHN",
+    "city": "Shenzhen",
+    "baseLat": 22.5431,
+    "baseLng": 114.0579,
+    "count": 25
+  },
+  {
+    "prefix": "CN-CD",
+    "namePrefix": "Chengdu Workspace",
+    "countryId": "CHN",
+    "city": "Chengdu",
+    "baseLat": 30.5728,
+    "baseLng": 104.0668,
+    "count": 19
+  },
+  {
+    "prefix": "APAC-SG",
+    "namePrefix": "Singapore Hub",
+    "countryId": "SGP",
+    "city": "Singapore",
+    "baseLat": 1.3521,
+    "baseLng": 103.8198,
+    "count": 5
+  },
+  {
+    "prefix": "APAC-TYO",
+    "namePrefix": "Tokyo Workspace",
+    "countryId": "JPN",
+    "city": "Tokyo",
+    "baseLat": 35.6762,
+    "baseLng": 139.6503,
+    "count": 6
+  },
+  {
+    "prefix": "APAC-BLR",
+    "namePrefix": "Bangalore Workspace",
+    "countryId": "IND",
+    "city": "Bangalore",
+    "baseLat": 12.9716,
+    "baseLng": 77.5946,
+    "count": 8
+  },
+  {
+    "prefix": "APAC-SYD",
+    "namePrefix": "Sydney Workspace",
+    "countryId": "AUS",
+    "city": "Sydney",
+    "baseLat": -33.8688,
+    "baseLng": 151.2093,
+    "count": 4
+  },
+  {
+    "prefix": "APAC-SEL",
+    "namePrefix": "Seoul Workspace",
+    "countryId": "KOR",
+    "city": "Seoul",
+    "baseLat": 37.5665,
+    "baseLng": 126.978,
+    "count": 4
+  },
+  {
+    "prefix": "EMEA-LON",
+    "namePrefix": "London Workspace",
+    "countryId": "GBR",
+    "city": "London",
+    "baseLat": 51.5072,
+    "baseLng": -0.1276,
+    "count": 8
+  },
+  {
+    "prefix": "EMEA-BER",
+    "namePrefix": "Berlin Workspace",
+    "countryId": "DEU",
+    "city": "Berlin",
+    "baseLat": 52.52,
+    "baseLng": 13.405,
+    "count": 6
+  },
+  {
+    "prefix": "EMEA-PAR",
+    "namePrefix": "Paris Workspace",
+    "countryId": "FRA",
+    "city": "Paris",
+    "baseLat": 48.8566,
+    "baseLng": 2.3522,
+    "count": 5
+  },
+  {
+    "prefix": "EMEA-DXB",
+    "namePrefix": "Dubai Workspace",
+    "countryId": "ARE",
+    "city": "Dubai",
+    "baseLat": 25.2048,
+    "baseLng": 55.2708,
+    "count": 6
+  },
+  {
+    "prefix": "EMEA-AMS",
+    "namePrefix": "Amsterdam Workspace",
+    "countryId": "NLD",
+    "city": "Amsterdam",
+    "baseLat": 52.3676,
+    "baseLng": 4.9041,
+    "count": 4
+  },
+  {
+    "prefix": "EMEA-MAD",
+    "namePrefix": "Madrid Workspace",
+    "countryId": "ESP",
+    "city": "Madrid",
+    "baseLat": 40.4168,
+    "baseLng": -3.7038,
+    "count": 4
+  },
+  {
+    "prefix": "AMS-SFO",
+    "namePrefix": "San Francisco Workspace",
+    "countryId": "USA",
+    "city": "San Francisco",
+    "baseLat": 37.7749,
+    "baseLng": -122.4194,
+    "count": 8
+  },
+  {
+    "prefix": "AMS-TOR",
+    "namePrefix": "Toronto Workspace",
+    "countryId": "CAN",
+    "city": "Toronto",
+    "baseLat": 43.6532,
+    "baseLng": -79.3832,
+    "count": 5
+  },
+  {
+    "prefix": "AMS-SAO",
+    "namePrefix": "Sao Paulo Workspace",
+    "countryId": "BRA",
+    "city": "Sao Paulo",
+    "baseLat": -23.5558,
+    "baseLng": -46.6396,
+    "count": 4
+  },
+  {
+    "prefix": "AMS-MEX",
+    "namePrefix": "Mexico City Workspace",
+    "countryId": "MEX",
+    "city": "Mexico City",
+    "baseLat": 19.4326,
+    "baseLng": -99.1332,
+    "count": 4
+  }
+]
