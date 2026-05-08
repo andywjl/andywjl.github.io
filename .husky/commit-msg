@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+MESSAGE_FILE="$1"
+MESSAGE="$(cat "$MESSAGE_FILE")"
+
+if printf "%s" "$MESSAGE" | rg -q "^(feat|fix|chore)\([a-z0-9-]+\): .+"; then
+  exit 0
+fi
+
+echo "commit message must match: feat(scope): xxx | fix(scope): xxx | chore(scope): xxx"
+exit 1

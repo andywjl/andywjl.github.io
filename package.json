@@ -5,6 +5,14 @@
   "scripts": {
     "dev": "pnpm -r --parallel dev",
     "build": "pnpm -r build",
-    "lint": "pnpm -r lint"
+    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint . --ext .js,.cjs,.mjs,.ts,.tsx --max-warnings 0",
+    "format": "prettier --check .",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^8.46.2",
+    "eslint": "^9.39.1",
+    "husky": "^9.1.7",
+    "prettier": "^3.6.2"
   }
 }
