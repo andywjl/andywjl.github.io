@@ -4,9 +4,16 @@ type ApiEnvelope<T> = {
   msg: string;
 };
 
+const viteEnv =
+  typeof import.meta !== "undefined"
+    ? (import.meta as { env?: { VITE_API_BASE_URL?: string } }).env
+    : undefined;
+
+const DEFAULT_API_BASE =
+  typeof window === "undefined" ? "http://localhost:3000/api/v1" : "/api/v1";
+
 const API_BASE =
-  import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ??
-  "http://localhost:3000/api/v1";
+  viteEnv?.VITE_API_BASE_URL?.replace(/\/$/, "") ?? DEFAULT_API_BASE;
 
 export async function fetchApi<T>(
   path: string,

@@ -1,9 +1,11 @@
 import Fastify from "fastify";
+import cors from "@fastify/cors";
 import { registerRegionRoutes } from "./routes/regions";
 import { registerCountryRoutes } from "./routes/countries";
 import { registerWorkspaceRoutes } from "./routes/workspaces";
 
 const app = Fastify();
+void app.register(cors, { origin: true });
 
 app.get("/api/v1/health", async () => {
   return {

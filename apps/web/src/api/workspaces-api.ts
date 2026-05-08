@@ -89,3 +89,31 @@ export async function getWorkspaces(
   const qs = search.toString();
   return fetchApi<WorkspaceListResult>(`/workspaces${qs ? `?${qs}` : ""}`);
 }
+
+export async function getAllWorkspaces(
+  query: WorkspaceQuery,
+): Promise<WorkspaceListResult> {
+  const pageSize = 100;
+  let page = 1;
+  let total = Number.POSITIVE_INFINITY;
+  const items: WorkspaceListItem[] = [];
+
+  while (items.length < total) {
+    const response = await getWorkspaces({
+      ...query,
+      page,
+      pageSize,
+    });
+    total = response.total;
+    items.push(...response.items);
+    if (response.items.length === 0) break;
+    page += 1;
+  }
+
+  return {
+    items,
+    total: Number.isFinite(total) ? total : items.length,
+    page: 1,
+    pageSize,
+  };
+}

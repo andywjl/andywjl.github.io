@@ -1,16 +1,24 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Globe from "react-globe.gl";
-import {
-  getWorkspaces,
-  type WorkspaceListItem,
-} from "@/api/workspaces-api";
+import type { WorkspaceListItem } from "@/api/workspaces-api";
 import { globeStoreActions, useGlobeStore } from "@/store/globe-store";
 
 type CountryFeature = {
   properties?: Record<string, unknown>;
 };
 
-const PAGE_SIZE = 100;
+type GlobeViewProps = {
+  workspaces: WorkspaceListItem[];
+  isLoading?: boolean;
+  error?: string;
+};
+
+type GlobeController = {
+  pointOfView: (
+    view: { lat: number; lng: number; altitude: number },
+    transitionMs?: number,
+  ) => void;
+};
 
 function resolveCountryCode(feature: CountryFeature): string | undefined {
   const props = feature.properties ?? {};
@@ -27,60 +35,39 @@ function resolveCountryCode(feature: CountryFeature): string | undefined {
   return normalized;
 }
 
-async function fetchAllWorkspaces(): Promise<WorkspaceListItem[]> {
-  const all: WorkspaceListItem[] = [];
-  let page = 1;
-  let total = Number.POSITIVE_INFINITY;
-
-  while (all.length < total) {
-    const response = await getWorkspaces({
-      page,
-      pageSize: PAGE_SIZE,
-    });
-    total = response.total;
-    all.push(...response.items);
-    if (response.items.length === 0) break;
-    page += 1;
-  }
-
-  return all.slice(0, Number.isFinite(total) ? total : all.length);
-}
-
-export function GlobeView() {
+export function GlobeView({ workspaces, isLoading, error }: GlobeViewProps) {
+  const globeRef = useRef<GlobeController | null>(null);
   const selectedCountry = useGlobeStore((state) => state.selectedCountry);
-  const [workspaces, setWorkspaces] = useState<WorkspaceListItem[]>([]);
+  const flyToTarget = useGlobeStore((state) => state.flyToTarget);
   const [countries, setCountries] = useState<CountryFeature[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string>();
+  const [geoLoading, setGeoLoading] = useState(true);
+  const [geoError, setGeoError] = useState<string>();
 
   useEffect(() => {
     let mounted = true;
-    setIsLoading(true);
-    setError(undefined);
+    setGeoLoading(true);
+    setGeoError(undefined);
 
-    Promise.all([
-      fetch("/geo/countries.geo.json").then((response) => {
+    fetch("/geo/countries.geo.json")
+      .then((response) => {
         if (!response.ok) {
           throw new Error(`countries.geo.json load failed: ${response.status}`);
         }
         return response.json() as Promise<{
           features?: CountryFeature[];
         }>;
-      }),
-      fetchAllWorkspaces(),
-    ])
-      .then(([geo, workspaceItems]) => {
+      })
+      .then((geo) => {
         if (!mounted) return;
         setCountries(geo.features ?? []);
-        setWorkspaces(workspaceItems);
       })
       .catch((err: unknown) => {
         if (!mounted) return;
-        setError(err instanceof Error ? err.message : String(err));
+        setGeoError(err instanceof Error ? err.message : String(err));
       })
       .finally(() => {
         if (!mounted) return;
-        setIsLoading(false);
+        setGeoLoading(false);
       });
 
     return () => {
@@ -88,11 +75,23 @@ export function GlobeView() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!flyToTarget || !globeRef.current) return;
+    globeRef.current.pointOfView(
+      {
+        lat: flyToTarget.lat,
+        lng: flyToTarget.lng,
+        altitude: flyToTarget.altitude,
+      },
+      900,
+    );
+  }, [flyToTarget]);
+
   const subtitle = useMemo(() => {
-    if (isLoading) return "正在加载工区点位与国家边界...";
-    if (error) return `加载失败: ${error}`;
+    if (isLoading || geoLoading) return "正在加载工区点位与国家边界...";
+    if (error || geoError) return `加载失败: ${error ?? geoError}`;
     return `已加载 ${workspaces.length} 个工区点位`;
-  }, [error, isLoading, workspaces.length]);
+  }, [error, geoError, geoLoading, isLoading, workspaces.length]);
 
   return (
     <section className="flex flex-col items-center gap-4">
@@ -106,6 +105,8 @@ export function GlobeView() {
 
       <div className="overflow-hidden rounded-xl border border-slate-700 bg-slate-950/40 p-3 shadow-2xl">
         <Globe
+          // @ts-expect-error react-globe.gl exposes imperative methods via ref
+          ref={globeRef}
           width={820}
           height={520}
           globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"

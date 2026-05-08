@@ -1,4 +1,4 @@
-import { getWorkspaces, type WorkspaceQuery } from "@/api/workspaces-api";
+import { getAllWorkspaces, type WorkspaceQuery } from "@/api/workspaces-api";
 import { useGlobeStore } from "@/store/globe-store";
 import { useMemo } from "react";
 import { useSWRResource } from "./use-swr-resource";
@@ -34,5 +34,5 @@ export function useWorkspaces(queryOverride?: WorkspaceQuery) {
   const query = queryOverride ?? queryFromStore;
   const key = useMemo(() => `workspaces:${serializeQuery(query)}`, [query]);
 
-  return useSWRResource(key, () => getWorkspaces(query));
+  return useSWRResource(key, () => getAllWorkspaces(query));
 }

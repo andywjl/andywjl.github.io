@@ -5,6 +5,12 @@ export type GlobeStoreState = {
   selectedRegion?: string;
   selectedCountry?: string;
   selectedWorkspaceId?: string;
+  flyToTarget?: {
+    lat: number;
+    lng: number;
+    altitude: number;
+    workspaceId: string;
+  };
   workspaceQuery: WorkspaceQuery;
 };
 
@@ -13,7 +19,7 @@ type Listener = () => void;
 const initialState: GlobeStoreState = {
   workspaceQuery: {
     page: 1,
-    pageSize: 20,
+    pageSize: 100,
   },
 };
 
@@ -83,6 +89,7 @@ export const globeStoreActions = {
       ...current,
       workspaceQuery: {
         ...current.workspaceQuery,
+        page: 1,
         ...partial,
       },
     }));
@@ -91,6 +98,24 @@ export const globeStoreActions = {
     setState((current) => ({
       ...current,
       selectedWorkspaceId: workspaceId,
+    }));
+  },
+  setFlyToTarget(target?: {
+    lat: number;
+    lng: number;
+    altitude?: number;
+    workspaceId: string;
+  }) {
+    setState((current) => ({
+      ...current,
+      flyToTarget: target
+        ? {
+            lat: target.lat,
+            lng: target.lng,
+            altitude: target.altitude ?? 1.2,
+            workspaceId: target.workspaceId,
+          }
+        : undefined,
     }));
   },
 };
