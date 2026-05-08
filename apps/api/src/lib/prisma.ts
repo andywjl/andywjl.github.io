@@ -2,9 +2,13 @@ type PrismaClientLike = {
   region: {
     findMany: (args: unknown) => Promise<unknown[]>;
   };
+  country: {
+    findMany: (args: unknown) => Promise<unknown[]>;
+  };
   workspace: {
     count: (args: { where: unknown }) => Promise<number>;
     findMany: (args: unknown) => Promise<unknown[]>;
+    findUnique: (args: unknown) => Promise<unknown | null>;
   };
 };
 

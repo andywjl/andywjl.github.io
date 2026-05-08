@@ -1,4 +1,7 @@
 import Fastify from "fastify";
+import { registerRegionRoutes } from "./routes/regions";
+import { registerCountryRoutes } from "./routes/countries";
+import { registerWorkspaceRoutes } from "./routes/workspaces";
 
 const app = Fastify();
 
@@ -9,6 +12,12 @@ app.get("/api/v1/health", async () => {
     msg: "ok",
   };
 });
+
+app.register(async (instance) => {
+  await registerRegionRoutes(instance);
+  await registerCountryRoutes(instance);
+  await registerWorkspaceRoutes(instance);
+}, { prefix: "/api/v1" });
 
 const start = async (): Promise<void> => {
   try {
